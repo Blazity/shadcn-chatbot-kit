@@ -8,10 +8,6 @@ Beautifully designed chatbot components built with and compatible with the shadc
 
 Visit http://sck.blazity.com/docs to view the documentation.
 
-## Contributing
-
-Please read the [contributing guide](/CONTRIBUTING.md).
-
 ## License
 
 Licensed under the [MIT license](https://github.com/Blazity/shadcn-chatbot-kit/blob/main/LICENSE.md).
