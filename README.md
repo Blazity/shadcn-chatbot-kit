@@ -2,7 +2,7 @@
 
 Beautifully designed chatbot components built with and compatible with the shadcn/ui ecosystem. Build AI chatbots in minutes, customize and own your components. Built by Blazity.
 
-![hero](apps/www/public/og.jpg)
+![hero](apps/www/public/og.png)
 
 ## Documentation
 
