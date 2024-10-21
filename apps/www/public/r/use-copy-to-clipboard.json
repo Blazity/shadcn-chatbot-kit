@@ -1,0 +1,15 @@
+{
+  "name": "use-copy-to-clipboard",
+  "type": "registry:hook",
+  "registryDependencies": [
+    "sonner"
+  ],
+  "files": [
+    {
+      "path": "hooks/use-copy-to-clipboard.ts",
+      "content": "import { useCallback, useRef, useState } from \"react\"\nimport { toast } from \"sonner\"\n\ntype UseCopyToClipboardProps = {\n  text: string\n  copyMessage?: string\n}\n\nexport function useCopyToClipboard({\n  text,\n  copyMessage = \"Copied to clipboard!\",\n}: UseCopyToClipboardProps) {\n  const [isCopied, setIsCopied] = useState(false)\n  const timeoutRef = useRef<NodeJS.Timeout | null>(null)\n\n  const handleCopy = useCallback(() => {\n    navigator.clipboard\n      .writeText(text)\n      .then(() => {\n        toast.success(copyMessage)\n        setIsCopied(true)\n        if (timeoutRef.current) {\n          clearTimeout(timeoutRef.current)\n          timeoutRef.current = null\n        }\n        timeoutRef.current = setTimeout(() => {\n          setIsCopied(false)\n        }, 2000)\n      })\n      .catch(() => {\n        toast.error(\"Failed to copy to clipboard.\")\n      })\n  }, [text, copyMessage])\n\n  return { isCopied, handleCopy }\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}

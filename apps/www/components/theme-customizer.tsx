@@ -230,28 +230,6 @@ function Customizer() {
               </PopoverContent>
             </Popover>
           </div>
-          <div className="grid grid-cols-3 gap-2">
-            <Button
-              variant={"outline"}
-              size="sm"
-              onClick={() => setConfig({ ...config, style: "default" })}
-              className={cn(
-                config.style === "default" && "border-2 border-primary"
-              )}
-            >
-              Default
-            </Button>
-            <Button
-              variant={"outline"}
-              size="sm"
-              onClick={() => setConfig({ ...config, style: "new-york" })}
-              className={cn(
-                config.style === "new-york" && "border-2 border-primary"
-              )}
-            >
-              New York
-            </Button>
-          </div>
         </div>
         <div className="space-y-1.5">
           <Label className="text-xs">Color</Label>

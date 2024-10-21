@@ -42,10 +42,8 @@ export function DocsPager({ doc }: DocsPagerProps) {
   )
 }
 
-export function getPagerForDoc(doc: Doc) {
-  const nav = doc.slug.startsWith("/docs/charts")
-    ? docsConfig.chartsNav
-    : docsConfig.sidebarNav
+function getPagerForDoc(doc: Doc) {
+  const nav = docsConfig.sidebarNav
   const flattenedLinks = [null, ...flatten(nav), null]
   const activeIndex = flattenedLinks.findIndex(
     (link) => doc.slug === link?.href
@@ -61,7 +59,7 @@ export function getPagerForDoc(doc: Doc) {
   }
 }
 
-export function flatten(links: NavItemWithChildren[]): NavItem[] {
+function flatten(links: NavItemWithChildren[]): NavItem[] {
   return links
     .reduce<NavItem[]>((flat, link) => {
       return flat.concat(link.items?.length ? flatten(link.items) : link)

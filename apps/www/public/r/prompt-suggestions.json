@@ -1,0 +1,12 @@
+{
+  "name": "prompt-suggestions",
+  "type": "registry:ui",
+  "files": [
+    {
+      "path": "ui/prompt-suggestions.tsx",
+      "content": "interface PromptSuggestionsProps {\n  append: (message: { role: \"user\"; content: string }) => void\n  suggestions: string[]\n}\n\nexport function PromptSuggestions({\n  append,\n  suggestions,\n}: PromptSuggestionsProps) {\n  return (\n    <div className=\"space-y-6\">\n      <h2 className=\"text-center text-2xl font-bold\">Try these prompts ✨</h2>\n      <div className=\"flex gap-6 text-sm\">\n        {suggestions.map((suggestion) => (\n          <button\n            key={suggestion}\n            onClick={() => append({ role: \"user\", content: suggestion })}\n            className=\"h-max flex-1 rounded-xl border bg-background p-4 hover:bg-muted\"\n          >\n            <p>{suggestion}</p>\n          </button>\n        ))}\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

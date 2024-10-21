@@ -1,0 +1,81 @@
+---
+title: Chat
+description: A flexible component for displaying chat messages in a user interface.
+component: true
+---
+
+<ComponentPreview
+  name="chat-demo"
+  description="A chat interface with message bubbles and a form to send new messages"
+/>
+
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add http://localhost:3333/r/chat.json
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="chat" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</Tabs>
+
+## Usage
+
+```tsx
+import { Chat } from "@/components/ui/chat"
+
+export function App() {
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    append,
+    stop,
+    isLoading,
+  } = useChat(props)
+
+  const lastMessage = messages.at(-1)
+
+  return (
+    <Chat
+      messages={messages}
+      handleSubmit={handleSubmit}
+      input={input}
+      handleInputChange={handleInputChange}
+      isLoading={lastMessage?.role === "user"}
+      isGenerating={isLoading}
+      stop={stop}
+      append={append}
+      suggestions={[
+        "Generate a tasty vegan lasagna recipe for 3 people.",
+        "Generate a list of 5 questions for a job interview for a software engineer.",
+        "Who won the 2022 FIFA World Cup?",
+      ]}
+    />
+  )
+}
+```

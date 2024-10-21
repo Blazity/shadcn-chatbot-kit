@@ -1,0 +1,12 @@
+{
+  "name": "use-auto-scroll",
+  "type": "registry:hook",
+  "files": [
+    {
+      "path": "hooks/use-auto-scroll.ts",
+      "content": "import { useEffect, useRef, useState } from \"react\"\n\nexport function useAutoScroll(dependencies: React.DependencyList) {\n  const containerRef = useRef<HTMLDivElement>(null)\n  const [shouldAutoScroll, setShouldAutoScroll] = useState(true)\n\n  const scrollToBottom = () => {\n    if (containerRef.current) {\n      containerRef.current.scrollTop = containerRef.current.scrollHeight\n    }\n  }\n\n  const handleScroll = () => {\n    if (containerRef.current) {\n      const { scrollTop, scrollHeight, clientHeight } = containerRef.current\n      const isScrolledToBottom =\n        Math.abs(scrollHeight - scrollTop - clientHeight) < 50\n      setShouldAutoScroll(isScrolledToBottom)\n    }\n  }\n\n  useEffect(() => {\n    if (shouldAutoScroll) {\n      scrollToBottom()\n    }\n    // eslint-disable-next-line react-hooks/exhaustive-deps\n  }, dependencies)\n\n  return { containerRef, scrollToBottom, handleScroll, shouldAutoScroll }\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}

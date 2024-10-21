@@ -1,27 +1,25 @@
-import Image from "next/image"
 import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
-import { Announcement } from "@/components/announcement"
-import { ExamplesNav } from "@/components/examples-nav"
 import {
   PageActions,
   PageHeader,
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header"
+import ChatDemo from "@/registry/default/example/chat-demo"
 import { Button } from "@/registry/new-york/ui/button"
-import MailPage from "@/app/(app)/examples/mail/page"
 
 export default function IndexPage() {
   return (
-    <div className="container relative">
+    <div className="container grid grid-cols-2 pt-10">
       <PageHeader>
-        <Announcement />
-        <PageHeaderHeading>Build your component library</PageHeaderHeading>
+        <PageHeaderHeading>
+          Build beautiful AI apps in hours, not days.
+        </PageHeaderHeading>
         <PageHeaderDescription>
-          Beautifully designed components that you can copy and paste into your
-          apps.
+          Beautifully designed chatbot components based on shadcn/ui. Fully
+          customizable and owned by you.
         </PageHeaderDescription>
         <PageActions>
           <Button asChild size="sm">
@@ -38,27 +36,25 @@ export default function IndexPage() {
           </Button>
         </PageActions>
       </PageHeader>
-      <ExamplesNav className="[&>a:first-child]:text-primary" />
-      <section className="overflow-hidden rounded-lg border bg-background shadow-md md:hidden md:shadow-xl">
-        <Image
-          src="/examples/mail-dark.png"
-          width={1280}
-          height={727}
-          alt="Mail"
-          className="hidden dark:block"
-        />
-        <Image
-          src="/examples/mail-light.png"
-          width={1280}
-          height={727}
-          alt="Mail"
-          className="block dark:hidden"
-        />
-      </section>
-      <section className="hidden md:block">
-        <div className="overflow-hidden rounded-lg border bg-background shadow">
-          <MailPage />
-        </div>
+
+      <section>
+        <PageHeader>
+          <ChatDemo
+            initialMessages={[
+              {
+                id: "1",
+                role: "user",
+                content: "What is shadcn-chatbot-kit?",
+              },
+              {
+                id: "2",
+                role: "assistant",
+                content:
+                  "shadcn-chatbot-kit is a toolkit to easily build chatbot UIs. It is a set of beautifully designed components based on shadcn/ui. It is fully customizable and owned by you.",
+              },
+            ]}
+          />
+        </PageHeader>
       </section>
     </div>
   )

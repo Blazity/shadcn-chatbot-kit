@@ -12,7 +12,6 @@ This repository is a monorepo.
 
 - We use [pnpm](https://pnpm.io) and [`workspaces`](https://pnpm.io/workspaces) for development.
 - We use [Turborepo](https://turbo.build/repo) as our build system.
-- We use [changesets](https://github.com/changesets/changesets) for managing releases.
 
 ## Structure
 

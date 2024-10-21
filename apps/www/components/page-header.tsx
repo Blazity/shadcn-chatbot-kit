@@ -8,7 +8,7 @@ function PageHeader({
   return (
     <section
       className={cn(
-        "mx-auto flex flex-col items-start gap-2 px-4 py-8 md:py-12 md:pb-8 lg:py-12 lg:pb-10",
+        "mx-auto flex flex-col items-start gap-2 px-4 py-8 md:py-12 lg:py-12",
         className
       )}
       {...props}
@@ -40,7 +40,7 @@ function PageHeaderDescription({
   return (
     <p
       className={cn(
-        "max-w-2xl text-balance text-lg font-light text-foreground",
+        "text-balance max-w-2xl text-lg font-light text-foreground",
         className
       )}
       {...props}

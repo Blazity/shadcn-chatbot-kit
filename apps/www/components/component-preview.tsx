@@ -5,19 +5,15 @@ import Image from "next/image"
 import { Index } from "@/__registry__"
 
 import { cn } from "@/lib/utils"
-import { useConfig } from "@/hooks/use-config"
 import { CopyButton } from "@/components/copy-button"
 import { Icons } from "@/components/icons"
-import { StyleSwitcher } from "@/components/style-switcher"
 import { ThemeWrapper } from "@/components/theme-wrapper"
-import { V0Button } from "@/components/v0-button"
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/registry/new-york/ui/tabs"
-import { styles } from "@/registry/registry-styles"
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
@@ -41,14 +37,13 @@ export function ComponentPreview({
   hideCode = false,
   ...props
 }: ComponentPreviewProps) {
-  const [config] = useConfig()
-  const index = styles.findIndex((style) => style.name === config.style)
+  const index = 0
 
   const Codes = React.Children.toArray(children) as React.ReactElement[]
   const Code = Codes[index]
 
   const Preview = React.useMemo(() => {
-    const Component = Index[config.style][name]?.component
+    const Component = Index[name]?.component
 
     if (!Component) {
       return (
@@ -63,7 +58,7 @@ export function ComponentPreview({
     }
 
     return <Component />
-  }, [name, config.style])
+  }, [name])
 
   const codeString = React.useMemo(() => {
     if (
@@ -75,33 +70,6 @@ export function ComponentPreview({
       return Button?.props?.value || Button?.props?.__rawString__ || null
     }
   }, [Code])
-
-  if (type === "block") {
-    return (
-      <div className="relative aspect-[4/2.5] w-full overflow-hidden rounded-md border">
-        <Image
-          src={`/images/blocks/${name}.png`}
-          alt={name}
-          width={1440}
-          height={900}
-          className="absolute left-0 top-0 z-20 w-[970px] max-w-none bg-background dark:hidden sm:w-[1280px] md:hidden md:dark:hidden"
-        />
-        <Image
-          src={`/images/blocks/${name}-dark.png`}
-          alt={name}
-          width={1440}
-          height={900}
-          className="absolute left-0 top-0 z-20 hidden w-[970px] max-w-none bg-background dark:block sm:w-[1280px] md:hidden md:dark:hidden"
-        />
-        <div className="absolute inset-0 hidden w-[1600px] bg-background md:block">
-          <iframe
-            src={`/blocks/${config.style}/${name}`}
-            className="size-full"
-          />
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div
@@ -128,16 +96,12 @@ export function ComponentPreview({
           )}
         </div>
         <TabsContent value="preview" className="relative rounded-md border">
-          <div className="flex items-center justify-between p-4">
-            <StyleSwitcher />
-            <div className="flex items-center gap-2">
-              {description ? <V0Button name={name} /> : null}
-              <CopyButton
-                value={codeString}
-                variant="outline"
-                className="h-7 w-7 text-foreground opacity-100 hover:bg-muted hover:text-foreground [&_svg]:h-3.5 [&_svg]:w-3.5"
-              />
-            </div>
+          <div className="flex items-center justify-end p-4">
+            <CopyButton
+              value={codeString}
+              variant="outline"
+              className="h-7 w-7 text-foreground opacity-100 hover:bg-muted hover:text-foreground [&_svg]:h-3.5 [&_svg]:w-3.5"
+            />
           </div>
           <ThemeWrapper defaultTheme="zinc">
             <div

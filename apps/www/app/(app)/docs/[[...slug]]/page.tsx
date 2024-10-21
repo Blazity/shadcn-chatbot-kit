@@ -1,17 +1,19 @@
+import Link from "next/link"
 import { notFound } from "next/navigation"
 import { allDocs } from "contentlayer/generated"
 
+import { cn } from "@/lib/utils"
+import { Button } from "@/registry/new-york/ui/button"
+
 import "@/styles/mdx.css"
 import type { Metadata } from "next"
-import Link from "next/link"
 import { ChevronRightIcon, ExternalLinkIcon } from "@radix-ui/react-icons"
 import Balancer from "react-wrap-balancer"
 
 import { siteConfig } from "@/config/site"
 import { getTableOfContents } from "@/lib/toc"
-import { absoluteUrl, cn } from "@/lib/utils"
+import { absoluteUrl } from "@/lib/utils"
 import { Mdx } from "@/components/mdx-components"
-import { OpenInV0Cta } from "@/components/open-in-v0-cta"
 import { DocsPager } from "@/components/pager"
 import { DashboardTableOfContents } from "@/components/toc"
 import { badgeVariants } from "@/registry/new-york/ui/badge"
@@ -140,7 +142,26 @@ export default async function DocPage({ params }: DocPageProps) {
         <div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] pt-4">
           <ScrollArea className="h-full pb-10">
             {doc.toc && <DashboardTableOfContents toc={toc} />}
-            <OpenInV0Cta className="mt-6 max-w-[80%]" />
+
+            <div className="group relative mt-6 flex max-w-[80%] flex-col gap-2 rounded-lg border p-4 text-sm">
+              <div className="text-balance text-lg font-semibold leading-tight group-hover:underline">
+                Get your AI application built by Next.js experts
+              </div>
+              <div>
+                Blazity is a team of extremely skilled Next.js engineers and
+                open-source contributors. We help companies build and ship
+                enterprise-ready web solutions.
+              </div>
+              <Button size="sm" className="mt-2 w-fit">
+                Check us out
+              </Button>
+              <Link
+                href="https://blazity.com/new?utm_source=opensource&utm_medium=web&utm_campaign=shadcn-chatbot-kit"
+                target="_blank"
+                rel="noreferrer"
+                className="absolute inset-0"
+              />
+            </div>
           </ScrollArea>
         </div>
       </div>
