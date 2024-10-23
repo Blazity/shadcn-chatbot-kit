@@ -52,9 +52,6 @@ export function Chat({
   const isEmpty = messages.length === 0
   const isTyping = lastMessage?.role === "user"
 
-  const { containerRef, scrollToBottom, handleScroll, shouldAutoScroll } =
-    useAutoScroll([messages])
-
   return (
     <ChatContainer className={className}>
       {isEmpty && append && suggestions ? (
@@ -62,25 +59,7 @@ export function Chat({
       ) : null}
 
       {messages.length > 0 ? (
-        <div
-          className="relative overflow-y-auto pb-4"
-          ref={containerRef}
-          onScroll={handleScroll}
-        >
-          <MessageList messages={messages} isTyping={isTyping} />
-          {!shouldAutoScroll && (
-            <div className="sticky bottom-0 left-0 flex w-full justify-end">
-              <Button
-                onClick={scrollToBottom}
-                className="h-8 w-8 rounded-full ease-in-out animate-in fade-in-0 slide-in-from-bottom-1"
-                size="icon"
-                variant="ghost"
-              >
-                <ArrowDown className="h-4 w-4" />
-              </Button>
-            </div>
-          )}
-        </div>
+        <ChatMessages messages={messages} isTyping={isTyping} />
       ) : null}
 
       <ChatForm
@@ -111,6 +90,39 @@ function createFileList(files: File[] | FileList): FileList {
     dataTransfer.items.add(file)
   }
   return dataTransfer.files
+}
+
+function ChatMessages({
+  messages,
+  isTyping,
+}: {
+  messages: Message[]
+  isTyping: boolean
+}) {
+  const { containerRef, scrollToBottom, handleScroll, shouldAutoScroll } =
+    useAutoScroll([messages])
+
+  return (
+    <div
+      className="relative overflow-y-auto pb-4"
+      ref={containerRef}
+      onScroll={handleScroll}
+    >
+      <MessageList messages={messages} isTyping={isTyping} />
+      {!shouldAutoScroll && (
+        <div className="sticky bottom-0 left-0 flex w-full justify-end">
+          <Button
+            onClick={scrollToBottom}
+            className="h-8 w-8 rounded-full ease-in-out animate-in fade-in-0 slide-in-from-bottom-1"
+            size="icon"
+            variant="ghost"
+          >
+            <ArrowDown className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+    </div>
+  )
 }
 
 const ChatContainer = forwardRef<
