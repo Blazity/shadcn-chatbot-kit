@@ -51,18 +51,9 @@ export const Doc = defineDocumentType(() => ({
       type: "string",
       required: true,
     },
-    published: {
-      type: "boolean",
-      default: true,
-    },
     links: {
       type: "nested",
       of: LinksProperties,
-    },
-    featured: {
-      type: "boolean",
-      default: false,
-      required: false,
     },
     component: {
       type: "boolean",
@@ -82,7 +73,7 @@ export default makeSource({
   contentDirPath: "./content",
   documentTypes: [Doc],
   mdx: {
-    remarkPlugins: [remarkGfm, codeImport],
+    remarkPlugins: [remarkGfm],
     rehypePlugins: [
       rehypeSlug,
       rehypeComponent,
@@ -123,7 +114,7 @@ export default makeSource({
             }
           },
           onVisitHighlightedLine(node) {
-            node.properties.className.push("line--highlighted")
+            node.properties.className = ["line--highlighted"]
           },
           onVisitHighlightedWord(node) {
             node.properties.className = ["word--highlighted"]

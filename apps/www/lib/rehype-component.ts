@@ -34,6 +34,7 @@ export function rehypeComponent() {
             src = srcPath
           } else {
             const component = Index[name]
+            console.log(":37", component)
             src = fileName
               ? component.files.find((file: string) => {
                   return (
@@ -97,6 +98,7 @@ export function rehypeComponent() {
 
         try {
           const component = Index[name]
+          console.log(":101", component)
           const src = component.files[0]
 
           // Read the source file.
