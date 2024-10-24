@@ -84,15 +84,7 @@ export function Chat({
 }
 Chat.displayName = "Chat"
 
-function createFileList(files: File[] | FileList): FileList {
-  const dataTransfer = new DataTransfer()
-  for (const file of Array.from(files)) {
-    dataTransfer.items.add(file)
-  }
-  return dataTransfer.files
-}
-
-function ChatMessages({
+export function ChatMessages({
   messages,
   isTyping,
 }: {
@@ -125,7 +117,7 @@ function ChatMessages({
   )
 }
 
-const ChatContainer = forwardRef<
+export const ChatContainer = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
@@ -152,7 +144,7 @@ interface ChatFormProps {
   }) => ReactElement
 }
 
-const ChatForm = forwardRef<HTMLFormElement, ChatFormProps>(
+export const ChatForm = forwardRef<HTMLFormElement, ChatFormProps>(
   ({ children, handleSubmit, isPending, className }, ref) => {
     const [files, setFiles] = useState<File[] | null>(null)
 
@@ -180,3 +172,11 @@ const ChatForm = forwardRef<HTMLFormElement, ChatFormProps>(
   }
 )
 ChatForm.displayName = "ChatForm"
+
+function createFileList(files: File[] | FileList): FileList {
+  const dataTransfer = new DataTransfer()
+  for (const file of Array.from(files)) {
+    dataTransfer.items.add(file)
+  }
+  return dataTransfer.files
+}
