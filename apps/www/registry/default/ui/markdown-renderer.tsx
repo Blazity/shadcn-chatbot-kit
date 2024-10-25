@@ -22,22 +22,8 @@ const COMPONENTS = {
   strong: withClass("strong", "font-semibold"),
   a: withClass("a", "text-primary underline underline-offset-2"),
   blockquote: withClass("blockquote", "border-l-2 border-primary pl-4"),
-  // TODO fix anys
   code: ({ children, className, node, ...rest }: any) => {
-    console.log("code renderer", children)
-    const match = /language-(\w+)/.exec(className || "")
-    return match ? (
-      // TODO: syntax highlighting
-      <>
-        <p>{match[1]}</p>
-        <code
-          className="font-mono [:not(pre)>&]:rounded-md [:not(pre)>&]:bg-background/50 [:not(pre)>&]:px-1 [:not(pre)>&]:py-0.5"
-          {...rest}
-        >
-          {children}
-        </code>
-      </>
-    ) : (
+    return (
       <code
         className="font-mono [:not(pre)>&]:rounded-md [:not(pre)>&]:bg-background/50 [:not(pre)>&]:px-1 [:not(pre)>&]:py-0.5"
         {...rest}

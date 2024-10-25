@@ -132,7 +132,6 @@ export function MessageInput({
           showFileList && "pb-16",
           className
         )}
-        // TODO: better way to do this
         {...(props.allowAttachments
           ? omit(props, ["allowAttachments", "files", "setFiles"])
           : omit(props, ["allowAttachments"]))}
@@ -325,8 +324,6 @@ function showFileUploadDialog() {
 
   input.type = "file"
   input.multiple = true
-  // TODO: accept value
-  // file.type.startsWith("image/") || file.type.startsWith("text/")
   input.accept = "*/*"
   input.click()
 

@@ -42,10 +42,30 @@ Visit [the documentation](https://shadcn-chatbot-kit.vercel.app/docs/components/
 
 ## 🚀 Quick Start
 
-<!-- TODO: example here -->
+**Note:** This example uses the Vercel AI SDK. Follow the [official Getting Started guide](https://sdk.vercel.ai/docs/getting-started/nextjs-app-router#create-your-application), before using it.
 
 ```tsx
+"use client"
 
+import { useChat } from "ai/react"
+
+import { Chat } from "@/components/ui/chat"
+
+export function ChatDemo() {
+  const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
+    useChat()
+
+  return (
+    <Chat
+      messages={messages}
+      input={input}
+      handleInputChange={handleInputChange}
+      handleSubmit={handleSubmit}
+      isGenerating={isLoading}
+      stop={stop}
+    />
+  )
+}
 ```
 
 ## 🎨 Customization
