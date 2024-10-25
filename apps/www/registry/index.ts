@@ -70,4 +70,9 @@ export const registry: Registry = [
       "A chat interface with message bubbles and a form to send new messages",
     files: ["example/chat-demo.tsx"],
   },
+  {
+    name: "message-input-demo",
+    type: "registry:example",
+    files: ["example/message-input-demo.tsx"],
+  },
 ]

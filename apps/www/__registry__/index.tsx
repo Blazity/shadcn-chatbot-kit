@@ -115,4 +115,15 @@ export const Index: Record<string, any> = {
       subcategory: "undefined",
       chunks: []
     },
+    "message-input-demo": {
+      name: "message-input-demo",
+      type: "registry:example",
+      registryDependencies: undefined,
+      files: ["registry/default/example/message-input-demo.tsx"],
+      component: React.lazy(() => import("@/registry/default/example/message-input-demo.tsx")),
+      source: "",
+      category: "undefined",
+      subcategory: "undefined",
+      chunks: []
+    },
 }

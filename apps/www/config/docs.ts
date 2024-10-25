@@ -49,6 +49,11 @@ export const docsConfig: DocsConfig = {
           href: "/docs/components/chat",
           items: [],
         },
+        {
+          title: "MessageInput",
+          href: "/docs/components/message-input",
+          items: [],
+        },
       ],
     },
   ],
