@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-import type { Attachment } from "ai"
 import { cva, type VariantProps } from "class-variance-authority"
 import { ThumbsDown, ThumbsUp } from "lucide-react"
 
@@ -20,9 +19,9 @@ const chatBubbleVariants = cva(
       },
       animation: {
         none: "",
-        slide: "animate-in fade-in-0 duration-300",
-        scale: "animate-in fade-in-0 zoom-in-75 duration-300",
-        fade: "animate-in fade-in-0 duration-500",
+        slide: "duration-300 animate-in fade-in-0",
+        scale: "duration-300 animate-in fade-in-0 zoom-in-75",
+        fade: "duration-500 animate-in fade-in-0",
       },
     },
     compoundVariants: [
@@ -57,7 +56,7 @@ export interface Message {
   role: "user" | "assistant" | (string & {})
   content: string
   createdAt?: Date
-  experimental_attachments?: Attachment[]
+  attachments?: File[]
 }
 
 export interface ChatMessageProps extends Message {
@@ -113,7 +112,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         <span
           className={cn(
             "mt-1 block px-1 text-xs opacity-50",
-            animation !== "none" && "animate-in fade-in-0 duration-500"
+            animation !== "none" && "duration-500 animate-in fade-in-0"
           )}
         >
           {formattedTime}

@@ -3,7 +3,7 @@
   "type": "registry:ui",
   "registryDependencies": [
     "button",
-    "http://localhost:3333/r/use-copy-to-clipboard.json"
+    "https://shadcn-chatbot-kit.vercel.app/r/use-copy-to-clipboard.json"
   ],
   "files": [
     {

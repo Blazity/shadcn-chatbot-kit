@@ -1,0 +1,12 @@
+{
+  "name": "typing-indicator",
+  "type": "registry:ui",
+  "files": [
+    {
+      "path": "ui/typing-indicator.tsx",
+      "content": "import { Dot } from \"lucide-react\"\n\nexport function TypingIndicator() {\n  return (\n    <div className=\"justify-left flex space-x-1\">\n      <div className=\"rounded-lg bg-muted p-3\">\n        <div className=\"flex -space-x-2.5\">\n          <Dot className=\"h-5 w-5 animate-typing-dot-bounce\" />\n          <Dot className=\"h-5 w-5 animate-typing-dot-bounce [animation-delay:90ms]\" />\n          <Dot className=\"h-5 w-5 animate-typing-dot-bounce [animation-delay:180ms]\" />\n        </div>\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

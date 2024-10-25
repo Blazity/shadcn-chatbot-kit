@@ -9,8 +9,7 @@ import { Button } from "@/registry/default/ui/button"
 import { type Message } from "@/registry/default/ui/chat-message"
 import { MessageInput } from "@/registry/default/ui/message-input"
 import { MessageList } from "@/registry/default/ui/message-list"
-
-import { PromptSuggestions } from "./prompt-suggestions"
+import { PromptSuggestions } from "@/registry/default/ui/prompt-suggestions"
 
 interface ChatPropsBase {
   handleSubmit: (

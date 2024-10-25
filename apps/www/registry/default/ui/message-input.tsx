@@ -6,9 +6,8 @@ import { ArrowUp, FileIcon, Paperclip, Square, X } from "lucide-react"
 import { omit } from "remeda"
 
 import { cn } from "@/lib/utils"
+import { useAutosizeTextArea } from "@/registry/default/hooks/use-autosize-textarea"
 import { Button } from "@/registry/default/ui/button"
-
-import { useAutosizeTextArea } from "../hooks/use-autosize-textarea"
 
 interface MessageInputBaseProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -43,6 +42,22 @@ export function MessageInput({
 }: MessageInputProps) {
   const [isDragging, setIsDragging] = useState(false)
 
+  const addFiles = (files: File[] | null) => {
+    if (props.allowAttachments) {
+      props.setFiles((currentFiles) => {
+        if (currentFiles === null) {
+          return files
+        }
+
+        if (files === null) {
+          return currentFiles
+        }
+
+        return [...currentFiles, ...files]
+      })
+    }
+  }
+
   const onDragOver = (event: React.DragEvent) => {
     if (props.allowAttachments !== true) return
     event.preventDefault()
@@ -61,7 +76,7 @@ export function MessageInput({
     event.preventDefault()
     const dataTransfer = event.dataTransfer
     if (dataTransfer.files.length) {
-      props.setFiles(Array.from(dataTransfer.files))
+      addFiles(Array.from(dataTransfer.files))
     }
   }
 
@@ -74,7 +89,7 @@ export function MessageInput({
       .filter((file) => file !== null)
 
     if (props.allowAttachments && files.length > 0) {
-      props.setFiles(files)
+      addFiles(files)
     }
   }
 
@@ -124,9 +139,9 @@ export function MessageInput({
       />
 
       {props.allowAttachments && (
-        <AnimatePresence mode="popLayout">
-          <div className="absolute bottom-0 left-0 w-full overflow-x-scroll p-3">
-            <div className="flex space-x-3">
+        <div className="absolute inset-x-3 bottom-0 overflow-x-scroll py-3">
+          <div className="flex space-x-3">
+            <AnimatePresence mode="popLayout">
               {props.files?.map((file) => {
                 return (
                   <FilePreview
@@ -146,9 +161,9 @@ export function MessageInput({
                   />
                 )
               })}
-            </div>
+            </AnimatePresence>
           </div>
-        </AnimatePresence>
+        </div>
       )}
 
       <div className="absolute right-3 top-3 flex gap-2">
@@ -161,13 +176,13 @@ export function MessageInput({
             aria-label="Attach a file"
             onClick={async () => {
               const files = await showFileUploadDialog()
-              props.setFiles(files)
+              addFiles(files)
             }}
           >
             <Paperclip className="h-4 w-4" />
           </Button>
         )}
-        {isGenerating ? (
+        {isGenerating && stop ? (
           <Button
             type="button"
             size="icon"
@@ -175,7 +190,7 @@ export function MessageInput({
             aria-label="Stop generating"
             onClick={stop}
           >
-            <Square className="h-3 w-3" fill="currentColor" />
+            <Square className="h-3 w-3 animate-pulse" fill="currentColor" />
           </Button>
         ) : (
           <Button
@@ -183,7 +198,7 @@ export function MessageInput({
             size="icon"
             className="h-8 w-8 transition-opacity"
             aria-label="Send message"
-            disabled={props.value === ""}
+            disabled={props.value === "" || isGenerating}
           >
             <ArrowUp className="h-5 w-5" />
           </Button>
@@ -225,74 +240,85 @@ interface FilePreviewProps {
   onRemove: () => void
 }
 
-function FilePreview(props: FilePreviewProps) {
-  if (props.file.type.startsWith("image/")) {
-    return <ImageFilePreview {...props} />
+const FilePreview = React.forwardRef<HTMLDivElement, FilePreviewProps>(
+  (props, ref) => {
+    if (props.file.type.startsWith("image/")) {
+      return <ImageFilePreview {...props} ref={ref} />
+    }
+
+    return <GenericFilePreview {...props} ref={ref} />
   }
+)
+FilePreview.displayName = "FilePreview"
 
-  return <GenericFilePreview {...props} />
-}
-
-function ImageFilePreview({ file, onRemove }: FilePreviewProps) {
-  return (
-    <motion.div
-      className="relative flex max-w-[200px] rounded-md border p-1.5 pr-2 text-xs"
-      layout
-      initial={{ opacity: 0, y: "100%" }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: "100%" }}
-    >
-      <div className="flex w-full items-center space-x-2">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          alt={`Attachment ${file.name}`}
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-sm border bg-muted object-cover"
-          src={URL.createObjectURL(file)}
-        />
-        <span className="w-full truncate text-muted-foreground">
-          {file.name}
-        </span>
-      </div>
-
-      <button
-        className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
-        type="button"
-        onClick={onRemove}
+const ImageFilePreview = React.forwardRef<HTMLDivElement, FilePreviewProps>(
+  ({ file, onRemove }, ref) => {
+    return (
+      <motion.div
+        ref={ref}
+        className="relative flex max-w-[200px] rounded-md border p-1.5 pr-2 text-xs"
+        layout
+        initial={{ opacity: 0, y: "100%" }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: "100%" }}
       >
-        <X className="h-2.5 w-2.5" />
-      </button>
-    </motion.div>
-  )
-}
-
-function GenericFilePreview({ file, onRemove }: FilePreviewProps) {
-  return (
-    <motion.div
-      className="relative flex max-w-[200px] rounded-md border p-1.5 pr-2 text-xs"
-      layout
-      initial={{ opacity: 0, y: "100%" }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: "100%" }}
-    >
-      <div className="flex w-full items-center space-x-2">
-        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-sm border bg-muted">
-          <FileIcon className="h-6 w-6 text-foreground" />
+        <div className="flex w-full items-center space-x-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt={`Attachment ${file.name}`}
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-sm border bg-muted object-cover"
+            src={URL.createObjectURL(file)}
+          />
+          <span className="w-full truncate text-muted-foreground">
+            {file.name}
+          </span>
         </div>
-        <span className="w-full truncate text-muted-foreground">
-          {file.name}
-        </span>
-      </div>
 
-      <button
-        className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
-        type="button"
-        onClick={onRemove}
+        <button
+          className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
+          type="button"
+          onClick={onRemove}
+        >
+          <X className="h-2.5 w-2.5" />
+        </button>
+      </motion.div>
+    )
+  }
+)
+ImageFilePreview.displayName = "ImageFilePreview"
+
+const GenericFilePreview = React.forwardRef<HTMLDivElement, FilePreviewProps>(
+  ({ file, onRemove }, ref) => {
+    return (
+      <motion.div
+        ref={ref}
+        className="relative flex max-w-[200px] rounded-md border p-1.5 pr-2 text-xs"
+        layout
+        initial={{ opacity: 0, y: "100%" }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: "100%" }}
       >
-        <X className="h-2.5 w-2.5" />
-      </button>
-    </motion.div>
-  )
-}
+        <div className="flex w-full items-center space-x-2">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-sm border bg-muted">
+            <FileIcon className="h-6 w-6 text-foreground" />
+          </div>
+          <span className="w-full truncate text-muted-foreground">
+            {file.name}
+          </span>
+        </div>
+
+        <button
+          className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
+          type="button"
+          onClick={onRemove}
+        >
+          <X className="h-2.5 w-2.5" />
+        </button>
+      </motion.div>
+    )
+  }
+)
+GenericFilePreview.displayName = "GenericFilePreview"
 
 function showFileUploadDialog() {
   const input = document.createElement("input")

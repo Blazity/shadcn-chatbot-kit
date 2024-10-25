@@ -1,3 +1,4 @@
+import { siteConfig } from "@/config/site"
 import { Registry } from "@/registry/schema"
 
 export const registry: Registry = [
@@ -7,36 +8,27 @@ export const registry: Registry = [
     files: ["ui/chat.tsx"],
     registryDependencies: [
       "button",
-      "http://localhost:3333/r/chat-message.json",
-      "http://localhost:3333/r/message-input.json",
-      "http://localhost:3333/r/message-list.json",
-      "http://localhost:3333/r/prompt-suggestions.json",
-      "http://localhost:3333/r/use-auto-scroll.json",
+      `${siteConfig.url}/r/use-auto-scroll.json`,
+      `${siteConfig.url}/r/chat-message.json`,
+      `${siteConfig.url}/r/message-input.json`,
+      `${siteConfig.url}/r/message-list.json`,
+      `${siteConfig.url}/r/prompt-suggestions.json`,
     ],
+  },
+  {
+    name: "use-auto-scroll",
+    type: "registry:hook",
+    files: ["hooks/use-auto-scroll.ts"],
   },
   {
     name: "chat-message",
     type: "registry:ui",
     files: ["ui/chat-message.tsx"],
-  },
-  {
-    name: "message-input",
-    type: "registry:ui",
-    files: ["ui/message-input.tsx"],
-    dependencies: ["framer-motion@11"],
     registryDependencies: [
-      "http://localhost:3333/r/use-autosize-textarea.json",
+      "button",
+      `${siteConfig.url}/r/copy-button.json`,
+      `${siteConfig.url}/r/markdown-renderer.json`,
     ],
-  },
-  {
-    name: "message-list",
-    type: "registry:ui",
-    files: ["ui/message-list.tsx"],
-  },
-  {
-    name: "prompt-suggestions",
-    type: "registry:ui",
-    files: ["ui/prompt-suggestions.tsx"],
   },
   {
     name: "copy-button",
@@ -44,7 +36,29 @@ export const registry: Registry = [
     files: ["ui/copy-button.tsx"],
     registryDependencies: [
       "button",
-      "http://localhost:3333/r/use-copy-to-clipboard.json",
+      `${siteConfig.url}/r/use-copy-to-clipboard.json`,
+    ],
+  },
+  {
+    name: "use-copy-to-clipboard",
+    type: "registry:hook",
+    files: ["hooks/use-copy-to-clipboard.ts"],
+    registryDependencies: ["sonner"],
+  },
+  {
+    name: "markdown-renderer",
+    type: "registry:ui",
+    files: ["ui/markdown-renderer.tsx"],
+    dependencies: ["react-markdown", "remark-gfm"],
+  },
+  {
+    name: "message-input",
+    type: "registry:ui",
+    files: ["ui/message-input.tsx"],
+    dependencies: ["framer-motion@11", "remeda@2"],
+    registryDependencies: [
+      "button",
+      `${siteConfig.url}/r/use-autosize-textarea.json`,
     ],
   },
   {
@@ -53,15 +67,23 @@ export const registry: Registry = [
     files: ["hooks/use-autosize-textarea.ts"],
   },
   {
-    name: "use-auto-scroll",
-    type: "registry:hook",
-    files: ["hooks/use-auto-scroll.ts"],
+    name: "message-list",
+    type: "registry:ui",
+    files: ["ui/message-list.tsx"],
+    registryDependencies: [
+      `${siteConfig.url}/r/chat-message.json`,
+      `${siteConfig.url}/r/typing-indicator.json`,
+    ],
   },
   {
-    name: "use-copy-to-clipboard",
-    type: "registry:hook",
-    files: ["hooks/use-copy-to-clipboard.ts"],
-    registryDependencies: ["sonner"],
+    name: "typing-indicator",
+    type: "registry:ui",
+    files: ["ui/typing-indicator.tsx"],
+  },
+  {
+    name: "prompt-suggestions",
+    type: "registry:ui",
+    files: ["ui/prompt-suggestions.tsx"],
   },
   {
     name: "chat-demo",

@@ -4,11 +4,11 @@
     "type": "registry:ui",
     "registryDependencies": [
       "button",
-      "http://localhost:3333/r/chat-message.json",
-      "http://localhost:3333/r/message-input.json",
-      "http://localhost:3333/r/message-list.json",
-      "http://localhost:3333/r/prompt-suggestions.json",
-      "http://localhost:3333/r/use-auto-scroll.json"
+      "https://shadcn-chatbot-kit.vercel.app/r/use-auto-scroll.json",
+      "https://shadcn-chatbot-kit.vercel.app/r/chat-message.json",
+      "https://shadcn-chatbot-kit.vercel.app/r/message-input.json",
+      "https://shadcn-chatbot-kit.vercel.app/r/message-list.json",
+      "https://shadcn-chatbot-kit.vercel.app/r/prompt-suggestions.json"
     ],
     "files": [
       {
@@ -20,6 +20,11 @@
   {
     "name": "chat-message",
     "type": "registry:ui",
+    "registryDependencies": [
+      "button",
+      "https://shadcn-chatbot-kit.vercel.app/r/copy-button.json",
+      "https://shadcn-chatbot-kit.vercel.app/r/markdown-renderer.json"
+    ],
     "files": [
       {
         "path": "ui/chat-message.tsx",
@@ -28,13 +33,43 @@
     ]
   },
   {
+    "name": "copy-button",
+    "type": "registry:ui",
+    "registryDependencies": [
+      "button",
+      "https://shadcn-chatbot-kit.vercel.app/r/use-copy-to-clipboard.json"
+    ],
+    "files": [
+      {
+        "path": "ui/copy-button.tsx",
+        "type": "registry:ui"
+      }
+    ]
+  },
+  {
+    "name": "markdown-renderer",
+    "type": "registry:ui",
+    "dependencies": [
+      "react-markdown",
+      "remark-gfm"
+    ],
+    "files": [
+      {
+        "path": "ui/markdown-renderer.tsx",
+        "type": "registry:ui"
+      }
+    ]
+  },
+  {
     "name": "message-input",
     "type": "registry:ui",
     "dependencies": [
-      "framer-motion@11"
+      "framer-motion@11",
+      "remeda@2"
     ],
     "registryDependencies": [
-      "http://localhost:3333/r/use-autosize-textarea.json"
+      "button",
+      "https://shadcn-chatbot-kit.vercel.app/r/use-autosize-textarea.json"
     ],
     "files": [
       {
@@ -46,9 +81,23 @@
   {
     "name": "message-list",
     "type": "registry:ui",
+    "registryDependencies": [
+      "https://shadcn-chatbot-kit.vercel.app/r/chat-message.json",
+      "https://shadcn-chatbot-kit.vercel.app/r/typing-indicator.json"
+    ],
     "files": [
       {
         "path": "ui/message-list.tsx",
+        "type": "registry:ui"
+      }
+    ]
+  },
+  {
+    "name": "typing-indicator",
+    "type": "registry:ui",
+    "files": [
+      {
+        "path": "ui/typing-indicator.tsx",
         "type": "registry:ui"
       }
     ]
@@ -59,20 +108,6 @@
     "files": [
       {
         "path": "ui/prompt-suggestions.tsx",
-        "type": "registry:ui"
-      }
-    ]
-  },
-  {
-    "name": "copy-button",
-    "type": "registry:ui",
-    "registryDependencies": [
-      "button",
-      "http://localhost:3333/r/use-copy-to-clipboard.json"
-    ],
-    "files": [
-      {
-        "path": "ui/copy-button.tsx",
         "type": "registry:ui"
       }
     ]

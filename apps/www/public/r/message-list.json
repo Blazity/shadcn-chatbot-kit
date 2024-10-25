@@ -1,6 +1,10 @@
 {
   "name": "message-list",
   "type": "registry:ui",
+  "registryDependencies": [
+    "https://shadcn-chatbot-kit.vercel.app/r/chat-message.json",
+    "https://shadcn-chatbot-kit.vercel.app/r/typing-indicator.json"
+  ],
   "files": [
     {
       "path": "ui/message-list.tsx",
