@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { ArrowUp, Paperclip, Square, X } from "lucide-react"
+import { ArrowUp, FileIcon, Paperclip, Square, X } from "lucide-react"
 import { omit } from "remeda"
 
 import { cn } from "@/lib/utils"
@@ -129,35 +129,21 @@ export function MessageInput({
             <div className="flex space-x-3">
               {props.files?.map((file) => {
                 return (
-                  <motion.div
-                    className="relative flex max-w-[200px] rounded-md border p-3 text-xs"
+                  <FilePreview
                     key={file.name + String(file.lastModified)}
-                    layout
-                    initial={{ opacity: 0, y: "100%" }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: "100%" }}
-                  >
-                    <button
-                      className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
-                      type="button"
-                      onClick={() => {
-                        props.setFiles((files) => {
-                          if (!files) return null
+                    file={file}
+                    onRemove={() => {
+                      props.setFiles((files) => {
+                        if (!files) return null
 
-                          const filtered = Array.from(files).filter(
-                            (f) => f !== file
-                          )
-                          if (filtered.length === 0) return null
-                          return filtered
-                        })
-                      }}
-                    >
-                      <X className="h-2.5 w-2.5" />
-                    </button>
-                    <span className="w-full truncate text-muted-foreground">
-                      {file.name}
-                    </span>
-                  </motion.div>
+                        const filtered = Array.from(files).filter(
+                          (f) => f !== file
+                        )
+                        if (filtered.length === 0) return null
+                        return filtered
+                      })
+                    }}
+                  />
                 )
               })}
             </div>
@@ -231,6 +217,80 @@ function FileUploadOverlay({ isDragging }: FileUploadOverlayProps) {
         </motion.div>
       )}
     </AnimatePresence>
+  )
+}
+
+interface FilePreviewProps {
+  file: File
+  onRemove: () => void
+}
+
+function FilePreview(props: FilePreviewProps) {
+  if (props.file.type.startsWith("image/")) {
+    return <ImageFilePreview {...props} />
+  }
+
+  return <GenericFilePreview {...props} />
+}
+
+function ImageFilePreview({ file, onRemove }: FilePreviewProps) {
+  return (
+    <motion.div
+      className="relative flex max-w-[200px] rounded-md border p-1.5 pr-2 text-xs"
+      layout
+      initial={{ opacity: 0, y: "100%" }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: "100%" }}
+    >
+      <div className="flex w-full items-center space-x-2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt={`Attachment ${file.name}`}
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-sm border bg-muted object-cover"
+          src={URL.createObjectURL(file)}
+        />
+        <span className="w-full truncate text-muted-foreground">
+          {file.name}
+        </span>
+      </div>
+
+      <button
+        className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
+        type="button"
+        onClick={onRemove}
+      >
+        <X className="h-2.5 w-2.5" />
+      </button>
+    </motion.div>
+  )
+}
+
+function GenericFilePreview({ file, onRemove }: FilePreviewProps) {
+  return (
+    <motion.div
+      className="relative flex max-w-[200px] rounded-md border p-1.5 pr-2 text-xs"
+      layout
+      initial={{ opacity: 0, y: "100%" }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: "100%" }}
+    >
+      <div className="flex w-full items-center space-x-2">
+        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-sm border bg-muted">
+          <FileIcon className="h-6 w-6 text-foreground" />
+        </div>
+        <span className="w-full truncate text-muted-foreground">
+          {file.name}
+        </span>
+      </div>
+
+      <button
+        className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
+        type="button"
+        onClick={onRemove}
+      >
+        <X className="h-2.5 w-2.5" />
+      </button>
+    </motion.div>
   )
 }
 
