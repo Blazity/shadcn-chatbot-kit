@@ -35,7 +35,7 @@ type MessageInputProps =
 export function MessageInput({
   placeholder = "Ask AI...",
   className,
-  onKeyDown,
+  onKeyDown: onKeyDownProp,
   submitOnEnter = true,
   stop,
   isGenerating,
@@ -65,6 +65,28 @@ export function MessageInput({
     }
   }
 
+  const onPaste = (event: React.ClipboardEvent) => {
+    const items = event.clipboardData?.items
+    if (!items) return
+
+    const files = Array.from(items)
+      .map((item) => item.getAsFile())
+      .filter((file) => file !== null)
+
+    if (props.allowAttachments && files.length > 0) {
+      props.setFiles(files)
+    }
+  }
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (submitOnEnter && event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault()
+      event.currentTarget.form?.requestSubmit()
+    }
+
+    onKeyDownProp?.(event)
+  }
+
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
 
   const showFileList =
@@ -88,14 +110,8 @@ export function MessageInput({
         aria-label="Write your prompt here"
         placeholder={placeholder}
         ref={textAreaRef}
-        onKeyDown={(event) => {
-          if (submitOnEnter && event.key === "Enter" && !event.shiftKey) {
-            event.preventDefault()
-            event.currentTarget.form?.requestSubmit()
-          }
-
-          onKeyDown?.(event)
-        }}
+        onPaste={onPaste}
+        onKeyDown={onKeyDown}
         className={cn(
           "w-full grow resize-none rounded-xl border border-input bg-background p-3 pr-24 text-sm ring-offset-background transition-[border] placeholder:text-muted-foreground focus-visible:border-primary focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
           showFileList && "pb-16",
@@ -223,6 +239,8 @@ function showFileUploadDialog() {
 
   input.type = "file"
   input.multiple = true
+  // TODO: accept value
+  // file.type.startsWith("image/") || file.type.startsWith("text/")
   input.accept = "*/*"
   input.click()
 
