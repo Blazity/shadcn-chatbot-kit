@@ -13,19 +13,18 @@ A comprehensive chatbot component kit built on top of and fully compatible with 
 - 📦 **Copy & Paste Components**: Install only what you need, own your components
 - 🔧 **Highly Customizable**: Modify any aspect of the components to match your needs
 - 📱 **Responsive Design**: Works seamlessly across all device sizes
-- 🚀 **Modern Development**: Built with the latest web standards and best practices
+- 🚀 **Modern Code**: Built with the latest web standards and best practices
 
 ## 🧩 Components
 
 The kit includes everything you need to build a full-featured chatbot:
 
-- **Chat Container**: Pre-configured layout with proper spacing and responsiveness
-- **Message Bubbles**: Stylish bubbles for user and bot messages
+- **Chat**: Pre-built chat component, with option to build a custom one with composable components
 - **Auto-Scroll Message Area**: Smart scrolling behavior for new messages
-- **Enhanced Message Input**:
+- **Message Input**:
   - Auto-resize textarea
   - File upload support
-  - Command handling
+  - Preview attached files
 - **Prompt Suggestions**: Help users with quick action buttons
 - **Message Actions**: Built-in copy, rate response, and other utility buttons
 - **Loading States**: Elegant loading indicators and transitions
