@@ -2,7 +2,7 @@
 
 A comprehensive chatbot component kit built on top of and fully compatible with the [shadcn/ui](https://ui.shadcn.com/) ecosystem. Build beautiful, customizable AI chatbots in minutes while maintaining full control over your components.
 
-![hero](apps/www/public/og.png)
+![hero](apps/www/public/og.jpg)
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![shadcn/ui](https://img.shields.io/badge/built%20with-shadcn%2Fui-black.svg)](https://ui.shadcn.com)
