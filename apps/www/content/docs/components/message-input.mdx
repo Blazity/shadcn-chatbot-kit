@@ -93,7 +93,7 @@ export function MessageInputWithAttachments() {
 }
 ```
 
-### With Stop Generation
+### With Stop Button
 
 ```tsx
 import { MessageInput } from "@/components/ui/message-input"
@@ -116,25 +116,25 @@ export function MessageInputWithStop() {
 
 The MessageInput component accepts two sets of props depending on whether file attachments are enabled.
 
-### Base Props
+### Props
 
-| Prop            | Type         | Description                    | Default     |
-| --------------- | ------------ | ------------------------------ | ----------- |
-| `value`         | `string`     | Current input value            | Required    |
-| `submitOnEnter` | `boolean`    | Whether to submit on Enter key | `true`      |
-| `stop`          | `() => void` | Function to stop generation    | -           |
-| `isGenerating`  | `boolean`    | Whether AI is generating       | Required    |
-| `placeholder`   | `string`     | Input placeholder text         | "Ask AI..." |
+| Prop               | Type         | Description                    | Default     |
+| ------------------ | ------------ | ------------------------------ | ----------- |
+| `value`            | `string`     | Current input value            | Required    |
+| `submitOnEnter`    | `boolean`    | Whether to submit on Enter key | `true`      |
+| `stop`             | `() => void` | Function to stop generation    | -           |
+| `isGenerating`     | `boolean`    | Whether AI is generating       | Required    |
+| `placeholder`      | `string`     | Input placeholder text         | "Ask AI..." |
+| `allowAttachments` | `boolean`    | Enable file attachments        |
 
-### With Attachments Props
+### With Attachments
 
 When `allowAttachments` is `true`, these additional props are required:
 
-| Prop               | Type                                                   | Description              |
-| ------------------ | ------------------------------------------------------ | ------------------------ |
-| `allowAttachments` | `true`                                                 | Enable file attachments  |
-| `files`            | `File[] \| null`                                       | Currently attached files |
-| `setFiles`         | `React.Dispatch<React.SetStateAction<File[] \| null>>` | Files state setter       |
+| Prop       | Type                                                   | Description              |
+| ---------- | ------------------------------------------------------ | ------------------------ |
+| `files`    | `File[] \| null`                                       | Currently attached files |
+| `setFiles` | `React.Dispatch<React.SetStateAction<File[] \| null>>` | Files state setter       |
 
 The component also accepts all standard textarea HTML attributes.
 
@@ -196,51 +196,29 @@ Show stop button during generation:
 ### In a Chat Form
 
 ```tsx
-<form onSubmit={handleSubmit}>
-  <MessageInput
-    value={input}
-    onChange={handleInputChange}
-    isGenerating={isLoading}
-    stop={stop}
-    allowAttachments
-    files={files}
-    setFiles={setFiles}
-  />
-</form>
+<ChatForm isPending={isPending} handleSubmit={handleSubmit}>
+  {({ files, setFiles }) => (
+    <MessageInput
+      value={input}
+      onChange={handleInputChange}
+      isGenerating={isLoading}
+      stop={stop}
+      allowAttachments
+      files={files}
+      setFiles={setFiles}
+    />
+  )}
+</ChatForm>
 ```
 
-### Custom Styling
-
-```tsx
-<MessageInput
-  className="min-h-[100px] bg-secondary"
-  value={input}
-  onChange={handleInputChange}
-  isGenerating={false}
-/>
-```
-
-## Accessibility
-
-- Proper ARIA labels for buttons and inputs
-- Keyboard navigation support
-- Screen reader friendly file upload interface
-- Visual feedback for drag and drop operations
-
-## Design Considerations
+## Design
 
 1. The component uses Framer Motion for smooth animations
 2. File attachments are displayed as removable chips
 3. The textarea auto-resizes for better user experience
-4. Visual feedback is provided during drag and drop operations
-5. The submit button is disabled when input is empty
+4. The submit button is disabled when input is empty
+5. The submit button changes to a cancel button while generating, if `stop` prop is provided, if not it is disabled during generation
 
-## Customization
+## Theming
 
-The MessageInput component can be customized through:
-
-- CSS classes using the `className` prop
-- Custom placeholder text
-- Maximum height adjustment
-- Submit behavior configuration
-- Theming through CSS variables
+The Chat component is using theme colors and fully themable with CSS variables.
