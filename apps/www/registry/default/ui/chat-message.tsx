@@ -16,9 +16,9 @@ const chatBubbleVariants = cva(
       },
       animation: {
         none: "",
-        slide: "duration-300 animate-in fade-in-0",
-        scale: "duration-300 animate-in fade-in-0 zoom-in-75",
-        fade: "duration-500 animate-in fade-in-0",
+        slide: "animate-in fade-in-0 duration-300",
+        scale: "animate-in fade-in-0 zoom-in-75 duration-300",
+        fade: "animate-in fade-in-0 duration-500",
       },
     },
     compoundVariants: [
@@ -85,7 +85,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         </div>
 
         {role === "assistant" && actions ? (
-          <div className="absolute -bottom-4 right-2 flex space-x-1 rounded-lg border bg-background p-1 opacity-0 transition-opacity group-hover/message:opacity-100">
+          <div className="bg-background absolute -bottom-4 right-2 flex space-x-1 rounded-lg border p-1 opacity-0 transition-opacity group-hover/message:opacity-100">
             {actions}
           </div>
         ) : null}
@@ -95,7 +95,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         <span
           className={cn(
             "mt-1 block px-1 text-xs opacity-50",
-            animation !== "none" && "duration-500 animate-in fade-in-0"
+            animation !== "none" && "animate-in fade-in-0 duration-500"
           )}
         >
           {formattedTime}

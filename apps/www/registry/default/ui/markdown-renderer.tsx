@@ -1,5 +1,9 @@
+import React from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
+
+import { cn } from "@/lib/utils"
+import { CopyButton } from "@/registry/default/ui/copy-button"
 
 interface MarkdownRendererProps {
   children: string
@@ -17,6 +21,51 @@ export function MarkdownRenderer({ children }: MarkdownRendererProps) {
   )
 }
 
+const CodeBlock = ({ children, className, ...restProps }: any) => {
+  const code =
+    typeof children === "string"
+      ? children
+      : childrenTakeAllStringContents(children)
+
+  return (
+    <div className="group/code relative mb-4">
+      <pre
+        className={cn(
+          "bg-background/50 overflow-x-scroll rounded-md border p-4 font-mono text-sm [scrollbar-width:none]",
+          className
+        )}
+        {...restProps}
+      >
+        {children}
+      </pre>
+
+      <div className="bg-background invisible absolute -top-4 right-2 flex space-x-1 rounded-lg p-1 opacity-0 transition-all duration-200 group-hover/code:visible group-hover/code:opacity-100">
+        <CopyButton content={code} copyMessage="Copied code to clipboard" />
+      </div>
+    </div>
+  )
+}
+
+function childrenTakeAllStringContents(element: any): string {
+  if (typeof element === "string") {
+    return element
+  }
+
+  if (element?.props?.children) {
+    let children = element.props.children
+
+    if (Array.isArray(children)) {
+      return children
+        .map((child) => childrenTakeAllStringContents(child))
+        .join("")
+    } else {
+      return childrenTakeAllStringContents(children)
+    }
+  }
+
+  return ""
+}
+
 const COMPONENTS = {
   h1: withClass("h1", "text-2xl font-semibold"),
   h2: withClass("h2", "font-semibold text-xl"),
@@ -27,15 +76,23 @@ const COMPONENTS = {
   a: withClass("a", "text-primary underline underline-offset-2"),
   blockquote: withClass("blockquote", "border-l-2 border-primary pl-4"),
   code: ({ children, className, node, ...rest }: any) => {
-    return (
+    const match = /language-(\w+)/.exec(className || "")
+    return match ? (
+      <CodeBlock className={className} {...rest}>
+        {children}
+      </CodeBlock>
+    ) : (
       <code
-        className="font-mono [:not(pre)>&]:rounded-md [:not(pre)>&]:bg-background/50 [:not(pre)>&]:px-1 [:not(pre)>&]:py-0.5"
+        className={cn(
+          "[:not(pre)>&]:bg-background/50 font-mono [:not(pre)>&]:rounded-md [:not(pre)>&]:px-1 [:not(pre)>&]:py-0.5"
+        )}
         {...rest}
       >
         {children}
       </code>
     )
   },
+  pre: ({ children }: any) => children,
   ol: withClass("ol", "list-decimal space-y-2 pl-6"),
   ul: withClass("ul", "list-disc space-y-2 pl-6"),
   li: withClass("li", "my-1.5"),
@@ -54,10 +111,6 @@ const COMPONENTS = {
   tr: withClass("tr", "m-0 border-t p-0 even:bg-muted"),
   p: withClass("p", "whitespace-pre-wrap"),
   hr: withClass("hr", "border-foreground/20"),
-  pre: withClass(
-    "pre",
-    "rounded-md bg-background/50 p-4 font-mono text-sm border"
-  ),
 }
 
 function withClass(Tag: keyof JSX.IntrinsicElements, classes: string) {
@@ -67,3 +120,5 @@ function withClass(Tag: keyof JSX.IntrinsicElements, classes: string) {
   Component.displayName = Tag
   return Component
 }
+
+export default MarkdownRenderer
