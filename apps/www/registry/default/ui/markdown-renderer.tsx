@@ -39,7 +39,7 @@ const CodeBlock = ({ children, className, ...restProps }: any) => {
         {children}
       </pre>
 
-      <div className="bg-background invisible absolute -top-4 right-2 flex space-x-1 rounded-lg p-1 opacity-0 transition-all duration-200 group-hover/code:visible group-hover/code:opacity-100">
+      <div className="invisible absolute right-2 top-2 flex space-x-1 rounded-lg p-1 opacity-0 transition-all duration-200 group-hover/code:visible group-hover/code:opacity-100">
         <CopyButton content={code} copyMessage="Copied code to clipboard" />
       </div>
     </div>
