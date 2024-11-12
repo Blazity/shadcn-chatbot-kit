@@ -49,7 +49,23 @@ export const registry: Registry = [
     name: "markdown-renderer",
     type: "registry:ui",
     files: ["ui/markdown-renderer.tsx"],
-    dependencies: ["react-markdown", "remark-gfm"],
+    dependencies: ["react-markdown", "remark-gfm", "shiki"],
+    tailwind: {
+      config: {
+        theme: {
+          extend: {
+            colors: {
+              shiki: {
+                light: "var(--shiki-light)",
+                "light-bg": "var(--shiki-light-bg)",
+                dark: "var(--shiki-dark)",
+                "dark-bg": "var(--shiki-dark-bg)",
+              },
+            },
+          },
+        },
+      },
+    },
   },
   {
     name: "message-input",

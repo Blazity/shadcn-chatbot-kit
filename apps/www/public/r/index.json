@@ -51,14 +51,31 @@
     "type": "registry:ui",
     "dependencies": [
       "react-markdown",
-      "remark-gfm"
+      "remark-gfm",
+      "shiki"
     ],
     "files": [
       {
         "path": "ui/markdown-renderer.tsx",
         "type": "registry:ui"
       }
-    ]
+    ],
+    "tailwind": {
+      "config": {
+        "theme": {
+          "extend": {
+            "colors": {
+              "shiki": {
+                "light": "var(--shiki-light)",
+                "light-bg": "var(--shiki-light-bg)",
+                "dark": "var(--shiki-dark)",
+                "dark-bg": "var(--shiki-dark-bg)"
+              }
+            }
+          }
+        }
+      }
+    }
   },
   {
     "name": "message-input",

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Suspense } from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
@@ -21,23 +21,97 @@ export function MarkdownRenderer({ children }: MarkdownRendererProps) {
   )
 }
 
-const CodeBlock = ({ children, className, ...restProps }: any) => {
+const shikiPromise = import("shiki")
+interface HighlightedPre extends React.HTMLAttributes<HTMLPreElement> {
+  children: string
+  language: string
+}
+
+const HighlightedPre = React.memo(
+  async ({ children, language, ...props }: HighlightedPre) => {
+    const { codeToTokens, bundledLanguages } = await shikiPromise
+
+    if (!(language in bundledLanguages)) {
+      return <pre {...props}>{children}</pre>
+    }
+
+    const { tokens } = await codeToTokens(children, {
+      lang: language as keyof typeof bundledLanguages,
+      defaultColor: false,
+      themes: {
+        light: "github-light",
+        dark: "github-dark",
+      },
+    })
+
+    return (
+      <pre {...props}>
+        <code>
+          {tokens.map((line, lineIndex) => (
+            <>
+              <span key={lineIndex}>
+                {line.map((token, tokenIndex) => {
+                  const style =
+                    typeof token.htmlStyle === "string"
+                      ? undefined
+                      : token.htmlStyle
+
+                  return (
+                    <span
+                      key={tokenIndex}
+                      className="text-shiki-light bg-shiki-light-bg dark:text-shiki-dark dark:bg-shiki-dark-bg"
+                      style={style}
+                    >
+                      {token.content}
+                    </span>
+                  )
+                })}
+              </span>
+              {"\n"}
+            </>
+          ))}
+        </code>
+      </pre>
+    )
+  }
+)
+HighlightedPre.displayName = "HighlightedCode"
+
+interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {
+  children: React.ReactNode
+  className?: string
+  language: string
+}
+
+const CodeBlock = ({
+  children,
+  className,
+  language,
+  ...restProps
+}: CodeBlockProps) => {
   const code =
     typeof children === "string"
       ? children
       : childrenTakeAllStringContents(children)
 
+  const preClass = cn(
+    "overflow-x-scroll rounded-md border bg-background/50 p-4 font-mono text-sm [scrollbar-width:none]",
+    className
+  )
+
   return (
     <div className="group/code relative mb-4">
-      <pre
-        className={cn(
-          "bg-background/50 overflow-x-scroll rounded-md border p-4 font-mono text-sm [scrollbar-width:none]",
-          className
-        )}
-        {...restProps}
+      <Suspense
+        fallback={
+          <pre className={preClass} {...restProps}>
+            {children}
+          </pre>
+        }
       >
-        {children}
-      </pre>
+        <HighlightedPre language={language} className={preClass}>
+          {code}
+        </HighlightedPre>
+      </Suspense>
 
       <div className="invisible absolute right-2 top-2 flex space-x-1 rounded-lg p-1 opacity-0 transition-all duration-200 group-hover/code:visible group-hover/code:opacity-100">
         <CopyButton content={code} copyMessage="Copied code to clipboard" />
@@ -78,13 +152,13 @@ const COMPONENTS = {
   code: ({ children, className, node, ...rest }: any) => {
     const match = /language-(\w+)/.exec(className || "")
     return match ? (
-      <CodeBlock className={className} {...rest}>
+      <CodeBlock className={className} language={match[1]} {...rest}>
         {children}
       </CodeBlock>
     ) : (
       <code
         className={cn(
-          "[:not(pre)>&]:bg-background/50 font-mono [:not(pre)>&]:rounded-md [:not(pre)>&]:px-1 [:not(pre)>&]:py-0.5"
+          "font-mono [:not(pre)>&]:rounded-md [:not(pre)>&]:bg-background/50 [:not(pre)>&]:px-1 [:not(pre)>&]:py-0.5"
         )}
         {...rest}
       >
