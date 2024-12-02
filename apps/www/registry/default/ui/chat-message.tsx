@@ -1,9 +1,10 @@
 "use client"
 
-import React from "react"
+import React, { useMemo } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
+import { FilePreview } from "@/registry/default/ui/file-preview"
 import { MarkdownRenderer } from "@/registry/default/ui/markdown-renderer"
 
 const chatBubbleVariants = cva(
@@ -48,12 +49,18 @@ const chatBubbleVariants = cva(
 
 type Animation = VariantProps<typeof chatBubbleVariants>["animation"]
 
+interface Attachment {
+  name?: string
+  contentType?: string
+  url: string
+}
+
 export interface Message {
   id: string
   role: "user" | "assistant" | (string & {})
   content: string
   createdAt?: Date
-  attachments?: File[]
+  experimental_attachments?: Attachment[]
 }
 
 export interface ChatMessageProps extends Message {
@@ -71,8 +78,17 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   animation = "scale",
   actions,
   className,
+  experimental_attachments,
 }) => {
   const isUser = role === "user"
+
+  const files = useMemo(() => {
+    return experimental_attachments?.map((attachment) => {
+      const dataArray = dataUrlToUint8Array(attachment.url)
+      const file = new File([dataArray], attachment.name ?? "Unknown")
+      return file
+    })
+  }, [experimental_attachments])
 
   const formattedTime = createdAt?.toLocaleTimeString("en-US", {
     hour: "2-digit",
@@ -81,6 +97,14 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
 
   return (
     <div className={cn("flex flex-col", isUser ? "items-end" : "items-start")}>
+      {files ? (
+        <div className="mb-1 flex gap-2 flex-wrap">
+          {files.map((file, index) => {
+            return <FilePreview file={file} key={index} />
+          })}
+        </div>
+      ) : null}
+
       <div className={cn(chatBubbleVariants({ isUser, animation }), className)}>
         <div>
           <MarkdownRenderer>{content}</MarkdownRenderer>
@@ -106,4 +130,10 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       ) : null}
     </div>
   )
+}
+
+function dataUrlToUint8Array(data: string) {
+  const base64 = data.split(",")[1]
+  const buf = Buffer.from(base64, "base64")
+  return new Uint8Array(buf)
 }

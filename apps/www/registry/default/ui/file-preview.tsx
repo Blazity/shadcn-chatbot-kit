@@ -6,7 +6,7 @@ import { FileIcon, X } from "lucide-react"
 
 interface FilePreviewProps {
   file: File
-  onRemove: () => void
+  onRemove?: () => void
 }
 
 export const FilePreview = React.forwardRef<HTMLDivElement, FilePreviewProps>(
@@ -51,14 +51,16 @@ const ImageFilePreview = React.forwardRef<HTMLDivElement, FilePreviewProps>(
           </span>
         </div>
 
-        <button
-          className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
-          type="button"
-          onClick={onRemove}
-          aria-label="Remove attachment"
-        >
-          <X className="h-2.5 w-2.5" />
-        </button>
+        {onRemove ? (
+          <button
+            className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
+            type="button"
+            onClick={onRemove}
+            aria-label="Remove attachment"
+          >
+            <X className="h-2.5 w-2.5" />
+          </button>
+        ) : null}
       </motion.div>
     )
   }
@@ -98,14 +100,16 @@ const TextFilePreview = React.forwardRef<HTMLDivElement, FilePreviewProps>(
           </span>
         </div>
 
-        <button
-          className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
-          type="button"
-          onClick={onRemove}
-          aria-label="Remove attachment"
-        >
-          <X className="h-2.5 w-2.5" />
-        </button>
+        {onRemove ? (
+          <button
+            className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
+            type="button"
+            onClick={onRemove}
+            aria-label="Remove attachment"
+          >
+            <X className="h-2.5 w-2.5" />
+          </button>
+        ) : null}
       </motion.div>
     )
   }
@@ -132,14 +136,16 @@ const GenericFilePreview = React.forwardRef<HTMLDivElement, FilePreviewProps>(
           </span>
         </div>
 
-        <button
-          className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
-          type="button"
-          onClick={onRemove}
-          aria-label="Remove attachment"
-        >
-          <X className="h-2.5 w-2.5" />
-        </button>
+        {onRemove ? (
+          <button
+            className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
+            type="button"
+            onClick={onRemove}
+            aria-label="Remove attachment"
+          >
+            <X className="h-2.5 w-2.5" />
+          </button>
+        ) : null}
       </motion.div>
     )
   }
