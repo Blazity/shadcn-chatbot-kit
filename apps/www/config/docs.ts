@@ -79,6 +79,11 @@ export const docsConfig: DocsConfig = {
           href: "/docs/components/copy-button",
           items: [],
         },
+        {
+          title: "File Preview",
+          href: "/docs/components/file-preview",
+          items: [],
+        },
       ],
     },
   ],

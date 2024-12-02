@@ -89,7 +89,8 @@
     ],
     "registryDependencies": [
       "button",
-      "https://shadcn-chatbot-kit.vercel.app/r/use-autosize-textarea.json"
+      "https://shadcn-chatbot-kit.vercel.app/r/use-autosize-textarea.json",
+      "https://shadcn-chatbot-kit.vercel.app/r/file-preview.json"
     ],
     "files": [
       {
@@ -149,6 +150,19 @@
     "files": [
       {
         "path": "ui/prompt-suggestions.tsx",
+        "type": "registry:ui"
+      }
+    ]
+  },
+  {
+    "name": "file-preview",
+    "type": "registry:ui",
+    "dependencies": [
+      "framer-motion@11"
+    ],
+    "files": [
+      {
+        "path": "ui/file-preview.tsx",
         "type": "registry:ui"
       }
     ]

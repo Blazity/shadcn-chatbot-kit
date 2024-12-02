@@ -76,6 +76,7 @@ export const registry: Registry = [
     registryDependencies: [
       "button",
       `${siteConfig.url}/r/use-autosize-textarea.json`,
+      `${siteConfig.url}/r/file-preview.json`,
     ],
   },
   {
@@ -118,6 +119,12 @@ export const registry: Registry = [
     name: "prompt-suggestions",
     type: "registry:ui",
     files: ["ui/prompt-suggestions.tsx"],
+  },
+  {
+    name: "file-preview",
+    type: "registry:ui",
+    files: ["ui/file-preview.tsx"],
+    dependencies: ["framer-motion@11"],
   },
   {
     name: "chat-demo",

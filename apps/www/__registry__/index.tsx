@@ -74,7 +74,7 @@ export const Index: Record<string, any> = {
     "message-input": {
       name: "message-input",
       type: "registry:ui",
-      registryDependencies: ["button","https://shadcn-chatbot-kit.vercel.app/r/use-autosize-textarea.json"],
+      registryDependencies: ["button","https://shadcn-chatbot-kit.vercel.app/r/use-autosize-textarea.json","https://shadcn-chatbot-kit.vercel.app/r/file-preview.json"],
       files: ["registry/default/ui/message-input.tsx"],
       component: React.lazy(() => import("@/registry/default/ui/message-input.tsx")),
       source: "",
@@ -121,6 +121,17 @@ export const Index: Record<string, any> = {
       registryDependencies: undefined,
       files: ["registry/default/ui/prompt-suggestions.tsx"],
       component: React.lazy(() => import("@/registry/default/ui/prompt-suggestions.tsx")),
+      source: "",
+      category: "undefined",
+      subcategory: "undefined",
+      chunks: []
+    },
+    "file-preview": {
+      name: "file-preview",
+      type: "registry:ui",
+      registryDependencies: undefined,
+      files: ["registry/default/ui/file-preview.tsx"],
+      component: React.lazy(() => import("@/registry/default/ui/file-preview.tsx")),
       source: "",
       category: "undefined",
       subcategory: "undefined",

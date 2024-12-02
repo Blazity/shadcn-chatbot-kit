@@ -1,0 +1,77 @@
+---
+title: File Preview
+description: A component for previewing image and text files.
+component: true
+---
+
+<ComponentPreview
+  name="file-preview-demo"
+  title="FilePreview"
+  description="A file preview component that supports both image and text files."
+/>
+
+The FilePreview component provides a consistent way to display file previews with support for both image and text files.
+
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add https://shadcn-chatbot-kit.vercel.app/r/file-preview.json
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the required dependencies</Step>
+
+```bash
+npm install framer-motion@11
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="file-preview" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</Tabs>
+
+## Usage
+
+```tsx
+import { FilePreview } from "@/registry/default/ui/file-preview"
+
+export function FilePreviewDemo() {
+  const [file, setFile] = useState<File | null>(null)
+
+  return (
+    <div>
+      {file && <FilePreview file={file} onRemove={() => setFile(null)} />}
+    </div>
+  )
+}
+```
+
+## Props
+
+### FilePreview
+
+| Prop     | Type       | Description                              |
+| -------- | ---------- | ---------------------------------------- |
+| file     | `File`     | The file object to preview               |
+| onRemove | `Function` | Callback function when remove is clicked |
