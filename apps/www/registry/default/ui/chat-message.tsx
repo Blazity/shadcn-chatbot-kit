@@ -107,7 +107,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   const files = useMemo(() => {
     return experimental_attachments?.map((attachment) => {
       const dataArray = dataUrlToUint8Array(attachment.url)
-      const file = new File([dataArray], attachment.name ?? "Unknown")
+      const file = new File([dataArray], attachment.name ?? "Unknown", {type: attachment.contentType})
       return file
     })
   }, [experimental_attachments])
