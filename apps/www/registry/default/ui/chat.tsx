@@ -65,7 +65,7 @@ export function Chat({
 }: ChatProps) {
   const lastMessage = messages.at(-1)
   const isEmpty = messages.length === 0
-  const isTyping = lastMessage?.role === "user"
+  const isTyping = isGenerating && lastMessage?.role === "user"
 
   const messagesRef = useRef(messages)
   messagesRef.current = messages
