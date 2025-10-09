@@ -16,7 +16,7 @@ import { Button } from "@/registry/new-york/ui/button"
 // Available demo models
 const MODELS = [
   { id: "llama-3.3-70b-versatile", name: "Llama 3.3 70B" },
-  { id: "deepseek-r1-distill-llama-70b", name: "Deepseek R1 70B" },
+  { id: "openai/gpt-oss-120b", name: "GPT-OSS 120B" },
 ]
 
 export default function DemoPage() {

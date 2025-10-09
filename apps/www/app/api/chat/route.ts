@@ -8,7 +8,7 @@ import { getWeather } from "@/lib/weather"
 export const maxDuration = 30
 
 const LLAMA_MODEL = "llama-3.3-70b-versatile"
-const DEEPSEEK_MODEL = "deepseek-r1-distill-llama-70b"
+const GPT_OSS_MODEL = "openai/gpt-oss-120b"
 
 export async function POST(req: Request) {
   const { messages, model = LLAMA_MODEL } = await req.json()
